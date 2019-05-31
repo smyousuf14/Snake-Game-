@@ -38,9 +38,9 @@ class SnakeBody:
     def setXValue(self, XValue):
         #make sure than it is within the boundary
         if XValue < 0:
-            self._XValue = self.MAX_X #Here we are assuming 300 is the max x value   is 300
+            self._XValue = self.MAX_X  + XValue
         elif XValue > self.MAX_X:
-            self._XValue = 0
+            self._XValue = 0 + (XValue - self.MAX_X)
         else:
             self._XValue = XValue
 
@@ -48,11 +48,12 @@ class SnakeBody:
 
         #Make sure that the y value is within the boundary
         if YValue < 0:
-            self._YValue = self.MAX_Y
+            self._YValue = self.MAX_Y + YValue
         elif YValue > self.MAX_Y:
-            self._YValue = 0
+            self._YValue = 0 + (YValue - self.MAX_Y)
         else:
             YValue = YValue
 
     def toString(self):
         print("XValue: " + str(self._XValue) + " YValue: " + str(self._YValue))
+
