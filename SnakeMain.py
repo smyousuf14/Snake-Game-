@@ -57,3 +57,20 @@ class SnakeBody:
     def toString(self):
         print("XValue: " + str(self._XValue) + " YValue: " + str(self._YValue))
 
+class Snake:
+
+    def __init__(self):
+        self.A_Snake = [SnakeBody(350,350)]
+
+    #Add a body box to the snake's overall body.
+    def addSnakeBox(self):
+        self.A_Snake.append(SnakeBody(350,350))
+
+    # Return the a specified snake body if it exists
+    def getSnakeBox(self, indexNumber):
+        return self.A_Snake[indexNumber]
+
+S1 = Snake()
+S1.getSnakeBox(0).toString()
+S1.addSnakeBox()
+S1.getSnakeBox(1).toString()
