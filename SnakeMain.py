@@ -70,7 +70,3 @@ class Snake:
     def getSnakeBox(self, indexNumber):
         return self.A_Snake[indexNumber]
 
-S1 = Snake()
-S1.getSnakeBox(0).toString()
-S1.addSnakeBox()
-S1.getSnakeBox(1).toString()
