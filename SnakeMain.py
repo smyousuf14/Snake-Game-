@@ -70,3 +70,68 @@ class Snake:
     def getSnakeBox(self, indexNumber):
         return self.A_Snake[indexNumber]
 
+# Determine if there is a collision between two rectangle objects.
+def RectangleRectangleCollision(x1,y1,l1,h1, x2,y2,l2,h2):
+    isCollision = False
+
+    #Check Top left
+    if x1 <= (x2 + l2) and x1 >= (x2):
+
+        if y1 >= y2 and y1 <= (y2 + h2):
+            isCollision = True
+
+    # Check top right
+    if (x1 + l1)<= (x2 + l2) and (x1 + l1) >= (x2):
+
+        if y1  >= y2 and y1 <= (y2 + h2):
+            isCollision = True
+
+    # Check bottom left
+    if x1 <= (x2 + l2) and x1 >= (x2):
+        if (y1 + h1) >= y2 and (y1 + h1) <= (y2 + h2):
+            isCollision = True
+
+    # Check bottom right
+    if (x1 + l1) <= (x2 + l2) and (x1 + l1) >= (x2):
+        if (y1 + h1) >= y2 and (y1 + h1) <= (y2 + h2):
+            isCollision = True
+
+    return isCollision
+#----------------------Main Game--------------------------------------------------
+
+#Create a display
+gameDisplay = pygame.display.set_mode((500,500))
+pygame.display.set_caption("Snake")
+clock = pygame.time.Clock()
+
+#Global Variables
+isRunning = True
+RecX  = 30
+RecY = 30
+int = 0
+pressedDown = False
+
+def paint():
+    gameDisplay.fill((0,0,0))
+
+    pygame.display.flip()  #Update the screen
+    clock.tick(100)
+
+while isRunning:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            isRunning = False
+        paint()
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+
+            paint()
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+
+            paint()
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+
+            paint()
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
+
+            paint()
