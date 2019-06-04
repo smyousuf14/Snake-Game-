@@ -117,6 +117,11 @@ def paint():
     pygame.display.flip()  #Update the screen
     clock.tick(100)
 
+#The game starts
+
+#Begin by creating a snake.
+mainSnake = Snake()
+
 while isRunning:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
