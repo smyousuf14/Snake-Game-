@@ -65,7 +65,7 @@ class Snake:
 
     #Add a body box to the snake's overall body.
     def addSnakeBox(self):
-        self.A_Snake.append(SnakeBody(350,350))
+        self.A_Snake.append(SnakeBody(350 + (self.count * 20),350))
         self.count += 1
 
     # Return the a specified snake body if it exists
@@ -122,7 +122,7 @@ def paint():
 
     # Paint the snake on the canvas
     for counter in range(0, mainSnake.getCountNumber()):
-        print("")
+        pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, 20, 20))
 
     pygame.display.flip()  #Update the screen
     clock.tick(100)
