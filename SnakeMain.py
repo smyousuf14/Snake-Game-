@@ -59,16 +59,22 @@ class SnakeBody:
 
 class Snake:
 
+    count = 1
     def __init__(self):
         self.A_Snake = [SnakeBody(350,350)]
 
     #Add a body box to the snake's overall body.
     def addSnakeBox(self):
         self.A_Snake.append(SnakeBody(350,350))
+        self.count += 1
 
     # Return the a specified snake body if it exists
     def getSnakeBox(self, indexNumber):
         return self.A_Snake[indexNumber]
+
+    # Returns the count number.
+    def getCountNumber(self):
+        return self.count
 
 # Determine if there is a collision between two rectangle objects.
 def RectangleRectangleCollision(x1,y1,l1,h1, x2,y2,l2,h2):
@@ -114,6 +120,10 @@ pressedDown = False
 def paint():
     gameDisplay.fill((0,0,0))
 
+    # Paint the snake on the canvas
+    for counter in range(0, mainSnake.getCountNumber()):
+        print("")
+
     pygame.display.flip()  #Update the screen
     clock.tick(100)
 
@@ -129,14 +139,14 @@ while isRunning:
         paint()
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-
+            #The snake should move right
             paint()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-
+            #The snake should move left
             paint()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-
+            #The snake should move up
             paint()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
-
+            #The snake should move down
             paint()
