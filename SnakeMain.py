@@ -124,6 +124,10 @@ def paint():
     for counter in range(0, mainSnake.getCountNumber()):
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, 20, 20))
 
+        # Abjust X and Y values for the snake according to the current speed
+        mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
+        mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
+
     pygame.display.flip()  #Update the screen
     clock.tick(100)
 
@@ -132,10 +136,16 @@ def paint():
 #Begin by creating a snake.
 mainSnake = Snake()
 
+# Give default values for the snake speed.
+SnakeX = 1
+SnakeY = 0
+
 while isRunning:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             isRunning = False
+
+        #Repaint
         paint()
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
