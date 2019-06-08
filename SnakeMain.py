@@ -1,3 +1,8 @@
+#First party imports
+import threading
+import time
+
+# Third party imports
 import pygame
 
 #Initialize pygame
@@ -124,10 +129,6 @@ def paint():
     for counter in range(0, mainSnake.getCountNumber()):
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, 20, 20))
 
-        # Abjust X and Y values for the snake according to the current speed
-        mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
-        mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
-
     pygame.display.flip()  #Update the screen
     clock.tick(100)
 
@@ -140,7 +141,22 @@ mainSnake = Snake()
 SnakeX = 1
 SnakeY = 0
 
+# The following function will deal with the snakes movements.
+def runSnake():
+    while(True):
+
+        # Abjust X and Y values for the snake according to the current speed
+        for counter in range(0, mainSnake.getCountNumber()):
+            mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
+            mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
+        time.sleep(4)
+
 while isRunning:
+
+    #Make the snake run on a seperate thread.
+    threadSnake = threading.Thread(target = runSnake)
+    threadSnake.start()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             isRunning = False
