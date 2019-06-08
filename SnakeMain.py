@@ -138,8 +138,8 @@ def paint():
 mainSnake = Snake()
 
 # Give default values for the snake speed.
-SnakeX = 1
-SnakeY = 0
+SnakeX = 2
+SnakeY = 2
 
 # The following function will deal with the snakes movements.
 def runSnake():
@@ -149,13 +149,13 @@ def runSnake():
         for counter in range(0, mainSnake.getCountNumber()):
             mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
             mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
-        time.sleep(4)
+        time.sleep(0.5)
+
+#Make the snake run on a seperate thread.
+threadSnake = threading.Thread(target = runSnake)
+threadSnake.start()
 
 while isRunning:
-
-    #Make the snake run on a seperate thread.
-    threadSnake = threading.Thread(target = runSnake)
-    threadSnake.start()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
