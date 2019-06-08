@@ -57,7 +57,7 @@ class SnakeBody:
         elif YValue > self.MAX_Y:
             self._YValue = 0 + (YValue - self.MAX_Y)
         else:
-            YValue = YValue
+            self._YValue = YValue
 
     def toString(self):
         print("XValue: " + str(self._XValue) + " YValue: " + str(self._YValue))
@@ -128,6 +128,10 @@ def paint():
     # Paint the snake on the canvas
     for counter in range(0, mainSnake.getCountNumber()):
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, 20, 20))
+        for counter in range(0, mainSnake.getCountNumber()):
+            mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
+            mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
+        time.sleep(0.5)
 
     pygame.display.flip()  #Update the screen
     clock.tick(100)
@@ -138,22 +142,18 @@ def paint():
 mainSnake = Snake()
 
 # Give default values for the snake speed.
-SnakeX = 2
-SnakeY = 2
+SnakeX = 10
+SnakeY = 0
 
 # The following function will deal with the snakes movements.
-def runSnake():
-    while(True):
+#def runSnake():
+ #   while(True):
 
         # Abjust X and Y values for the snake according to the current speed
-        for counter in range(0, mainSnake.getCountNumber()):
-            mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
-            mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
-        time.sleep(0.5)
 
 #Make the snake run on a seperate thread.
-threadSnake = threading.Thread(target = runSnake)
-threadSnake.start()
+#threadSnake = threading.Thread(target = runSnake)
+#threadSnake.start()
 
 while isRunning:
 
@@ -163,7 +163,7 @@ while isRunning:
 
         #Repaint
         paint()
-
+        print("" + str(mainSnake.getSnakeBox(0).getYValue) + "  " + str(SnakeY))
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
             #The snake should move right
             paint()
