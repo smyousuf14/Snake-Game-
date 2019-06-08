@@ -18,10 +18,10 @@ class SnakeBody:
     def __init__(self, XValue, YValue):
         self._XValue = XValue
         self._YValue = YValue
-        self._Length = 60
-        self._Height = 60
-        self.MAX_X = 800
-        self.MAX_Y = 800
+        self._Length = 20
+        self._Height = 20
+        self.MAX_X = 500
+        self.MAX_Y = 500
 
     # Getters
     @property
@@ -126,14 +126,18 @@ pressedDown = False
 def paint():
     gameDisplay.fill((0,0,0))
 
+    # Paint the food.
+    pygame.draw.rect(gameDisplay, (0, 128, 255), (foodX, foodY, 20, 20))
+
     # Paint the snake on the canvas
     for counter in range(0, mainSnake.getCountNumber()):
-        pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, 20, 20))
-        for counter in range(0, mainSnake.getCountNumber()):
-            mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
-            mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
-        time.sleep(0.5)
+        pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, mainSnake.getSnakeBox(counter).getHeight, mainSnake.getSnakeBox(counter).getLength))
+        mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter).getXValue + SnakeX)
+        mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter).getYValue + SnakeY)
+        #time.sleep(0.5)
 
+    #Check for collisions with the food.
+    
     pygame.display.flip()  #Update the screen
     clock.tick(100)
 
@@ -157,8 +161,11 @@ SnakeY = 0
 #threadSnake.start()
 
 #Next, create a random block.
-foodX = np.random.randint(low = 1, high = 800)
-foodY = np.random.randint(low = 1, high = 800)
+foodX = np.random.randint(low = 1, high = 500)
+foodY = np.random.randint(low = 1, high = 500)
+
+print(foodX)
+print(foodY)
 
 while isRunning:
 
@@ -171,13 +178,29 @@ while isRunning:
         print("" + str(mainSnake.getSnakeBox(0).getYValue) + "  " + str(SnakeY))
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
             #The snake should move right
+            if SnakeX != 10:
+                SnakeX = 10
+                SnakeY = 0
+
             paint()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
             #The snake should move left
+            if SnakeX != -10:
+                SnakeX = -10
+                SnakeY = 0
+
             paint()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
             #The snake should move up
+            if SnakeY != -10:
+                SnakeY = -10
+                SnakeX  = 0
+
             paint()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
             #The snake should move down
+            if SnakeY != 10:
+                SnakeY = 10
+                SnakeX  = 0
+
             paint()
