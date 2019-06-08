@@ -4,6 +4,7 @@ import time
 
 # Third party imports
 import pygame
+import numpy as np
 
 #Initialize pygame
 pygame.init()
@@ -154,6 +155,10 @@ SnakeY = 0
 #Make the snake run on a seperate thread.
 #threadSnake = threading.Thread(target = runSnake)
 #threadSnake.start()
+
+#Next, create a random block.
+foodX = np.random.randint(low = 1, high = 800)
+foodY = np.random.randint(low = 1, high = 800)
 
 while isRunning:
 
