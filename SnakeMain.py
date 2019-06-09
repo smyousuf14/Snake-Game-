@@ -152,12 +152,12 @@ SnakeY = 0
 def runSnake():
     while(True):
         # Abjust X and Y values for the snake according to the current speed
-        mainSnake.getSnakeBox(0).setXValue(mainSnake.getSnakeBox(0).getXValue + SnakeX)
-        mainSnake.getSnakeBox(0).setYValue(mainSnake.getSnakeBox(0).getYValue + SnakeY)
+        mainSnake.getSnakeBox().setXValue(mainSnake.getSnakeBox().getXValue + SnakeX)
+        mainSnake.getSnakeBox().setYValue(mainSnake.getSnakeBox().getYValue + SnakeY)
         time.sleep(0.05)
 
 #Make the snake run on a seperate thread.
-threadSnake = threading.Thread(target = runSnake)
+threadSnake = threading.Thread(target = runSnake())
 threadSnake.start()
 
 #Next, create a random block.
@@ -176,7 +176,7 @@ while isRunning:
     #Repaint
     paint()
 
-    print("" + str(mainSnake.getSnakeBox(0).getYValue) + "  " + str(SnakeY))
+    print("" + str(mainSnake.getSnakeBox(0).getYValue) + "  " + str(SnakeY)) #For testing/debugging purposes
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
         #The snake should move right
         if SnakeX != 10:
