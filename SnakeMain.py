@@ -122,6 +122,7 @@ RecX  = 30
 RecY = 30
 int = 0
 pressedDown = False
+currentBoxNum = 0 # This is the current snake body number
 
 def paint():
     gameDisplay.fill((0,0,0))
@@ -149,15 +150,15 @@ SnakeX = 10
 SnakeY = 0
 
 # The following function will deal with the snakes movements.
-def runSnake():
+def runSnake(boxNum):
     while(True):
         # Abjust X and Y values for the snake according to the current speed
-        mainSnake.getSnakeBox().setXValue(mainSnake.getSnakeBox().getXValue + SnakeX)
-        mainSnake.getSnakeBox().setYValue(mainSnake.getSnakeBox().getYValue + SnakeY)
+        mainSnake.getSnakeBox(boxNum).setXValue(mainSnake.getSnakeBox(boxNum).getXValue + SnakeX)
+        mainSnake.getSnakeBox(boxNum).setYValue(mainSnake.getSnakeBox(boxNum).getYValue + SnakeY)
         time.sleep(0.05)
 
 #Make the snake run on a seperate thread.
-threadSnake = threading.Thread(target = runSnake())
+threadSnake = threading.Thread(target = runSnake, args = (0,))
 threadSnake.start()
 
 #Next, create a random block.
