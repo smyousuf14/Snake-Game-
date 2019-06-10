@@ -149,9 +149,20 @@ mainSnake = Snake()
 SnakeX = 10
 SnakeY = 0
 
+
 # The following function will deal with the snakes movements.
 def runSnake(boxNum):
+
+    # Local Variable List
+    NewSnakeX = 0
+    NewSnakeY = 0
+
     while(True):
+        # Check the condition if this snake body should be moved.
+        if boxNum == currentBoxNum:
+            NewSnakeX  = SnakeX
+            NewSnakeY = SnakeY
+
         # Abjust X and Y values for the snake according to the current speed
         mainSnake.getSnakeBox(boxNum).setXValue(mainSnake.getSnakeBox(boxNum).getXValue + SnakeX)
         mainSnake.getSnakeBox(boxNum).setYValue(mainSnake.getSnakeBox(boxNum).getYValue + SnakeY)
