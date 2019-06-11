@@ -142,7 +142,7 @@ def paint():
     #Check for collisions with the food.
 
     pygame.display.flip()  #Update the screen
-    clock.tick(100)
+    time.sleep(0.05)
 
 #The game starts
 
@@ -163,15 +163,6 @@ def iterateEachBody():
         print(counter)
         print(mainSnake.getSnakeBox(counter).getXValue)
         print(mainSnake.getSnakeBox(counter).getYValue)
-
-        if counter == 1:
-            if mainSnake.getSnakeBox(counter - 1).getXValue != mainSnake.getSnakeBox(counter).getXValue:
-                mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter - 1).getXValue - mainSnake.getSnakeBox(counter - 1).getLength)
-                mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter - 1).getYValue - mainSnake.getSnakeBox(counter - 1).getHeight)
-
-            if mainSnake.getSnakeBox(counter - 1).getYValue != mainSnake.getSnakeBox(counter).getYValue:
-                mainSnake.getSnakeBox(counter).setXValue(mainSnake.getSnakeBox(counter - 1).getXValue - mainSnake.getSnakeBox(counter - 1).getLength)
-                mainSnake.getSnakeBox(counter).setYValue(mainSnake.getSnakeBox(counter - 1).getYValue - mainSnake.getSnakeBox(counter - 1).getHeight)
 
         mainSnake.getSnakeBox(counter).snakeSpeedX = SnakeX
         mainSnake.getSnakeBox(counter).snakeSpeedY = SnakeY
