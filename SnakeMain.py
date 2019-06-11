@@ -150,6 +150,18 @@ SnakeX = 10
 SnakeY = 0
 
 
+# The following function will iterate through each snake body.
+def iterateEachBody():
+    #Make sure that the current box number is 0.
+    currentBoxNum = 0
+    print(currentBoxNum)
+
+    #Now iterate.
+    for counter in range(0, mainSnake.getCountNumber()):
+        time.sleep(0.05)
+        currentBoxNum += 1
+        print(currentBoxNum)
+
 # The following function will deal with the snakes movements.
 def runSnake(boxNum):
 
@@ -170,6 +182,10 @@ def runSnake(boxNum):
 
 #Make the snake run on a seperate thread.
 threadSnake = threading.Thread(target = runSnake, args = (0,))
+threadSnake.start()
+
+mainSnake.addSnakeBox()
+threadSnake = threading.Thread(target = runSnake, args = (1,))
 threadSnake.start()
 
 #Next, create a random block.
@@ -194,6 +210,9 @@ while isRunning:
         if SnakeX != 10:
             SnakeX = 10
             SnakeY = 0
+            # Make a seperate thread for the shifting movement
+            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove.start()
 
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
@@ -201,6 +220,9 @@ while isRunning:
         if SnakeX != -10:
             SnakeX = -10
             SnakeY = 0
+            # Make a seperate thread for the shifting movement
+            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove.start()
 
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
@@ -208,6 +230,9 @@ while isRunning:
         if SnakeY != -10:
             SnakeY = -10
             SnakeX  = 0
+            # Make a seperate thread for the shifting movement
+            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove.start()
 
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
@@ -215,3 +240,6 @@ while isRunning:
         if SnakeY != 10:
             SnakeY = 10
             SnakeX  = 0
+            # Make a seperate thread for the shifting movement
+            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove.start()
