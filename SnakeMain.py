@@ -15,7 +15,7 @@ class SnakeBody:
     count = 0 #Keeps count of how many snakebody has been created
 
     #Default Contructor
-    def __init__(self, XValue, YValue):
+    def __init__(self, XValue, YValue, direction):
         self._XValue = XValue
         self._YValue = YValue
         self._Length = 20
@@ -24,6 +24,7 @@ class SnakeBody:
         self.MAX_Y = 500
         self.snakeSpeedX = 10
         self.snakeSpeedY = 0
+        self.direction = direction
 
     # Getters
     @property
@@ -68,12 +69,12 @@ class SnakeBody:
 class Snake:
 
     count = 1
-    def __init__(self):
-        self.A_Snake = [SnakeBody(350,350)]
+    def __init__(self, direction):
+        self.A_Snake = [SnakeBody(350,350,direction)]
 
     #Add a body box to the snake's overall body.
-    def addSnakeBox(self):
-        self.A_Snake.append(SnakeBody(350 - (self.count * 20),350))
+    def addSnakeBox(self, direction):
+        self.A_Snake.append(SnakeBody(350 - (self.count * 20),350, direction))
         self.count += 1
 
     # Return the a specified snake body if it exists
@@ -83,6 +84,39 @@ class Snake:
     # Returns the count number.
     def getCountNumber(self):
         return self.count
+
+    # Adjust the snake to keep it from leaving its form.
+    def adjust(self, indexNumber):
+        # Check the direction.
+        if self.A_Snake[indexNumber].direction == "right":
+            # It is to the right.
+            # Make sure the the next snake body box is not empty.
+            try:
+                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue - 20)
+                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue)
+            except:
+                print("")
+        elif self.A_Snake[indexNumber].direction == "left":
+            # It is to the left
+            try:
+                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue + 20)
+                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue)
+            except:
+                print("")
+        elif self.A_Snake[indexNumber].direction == "up":
+            # It is up.
+            try:
+                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue)
+                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue + 20)
+            except:
+                print("")
+        elif self.A_Snake[indexNumber].direction == "down":
+            # It is down
+            try:
+                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue)
+                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue - 20)
+            except:
+                print("")
 
 # Determine if there is a collision between two rectangle objects.
 def RectangleRectangleCollision(x1,y1,l1,h1, x2,y2,l2,h2):
@@ -148,7 +182,7 @@ def paint():
 #The game starts
 
 #Begin by creating a snake.
-mainSnake = Snake()
+mainSnake = Snake("right")
 
 # Give default values for the snake speed.
 SnakeX = 10
@@ -185,7 +219,7 @@ def runSnake(boxNum):
 threadSnake = threading.Thread(target = runSnake, args = (0,))
 threadSnake.start()
 
-mainSnake.addSnakeBox()
+mainSnake.addSnakeBox("right")
 threadSnake = threading.Thread(target = runSnake, args = (1,))
 threadSnake.start()
 
