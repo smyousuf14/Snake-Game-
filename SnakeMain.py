@@ -125,6 +125,7 @@ RecY = 30
 int = 0
 pressedDown = False
 currentBoxNum = 0 # This is the current snake body number
+isMoved = False
 
 def paint():
     gameDisplay.fill((0,0,0))
@@ -142,7 +143,7 @@ def paint():
     #Check for collisions with the food.
 
     pygame.display.flip()  #Update the screen
-    time.sleep(0.05)
+    time.sleep(0.0005)
 
 #The game starts
 
@@ -168,13 +169,10 @@ def iterateEachBody():
         mainSnake.getSnakeBox(counter).snakeSpeedY = SnakeY
         time.sleep(0.10)
 
-
-
 # The following function will deal with the snakes movements.
 def runSnake(boxNum):
 
     # Local Variable List
-
 
     while(True):
 
@@ -214,9 +212,12 @@ while isRunning:
         if SnakeX != 10:
             SnakeX = 10
             SnakeY = 0
+
             # Make a seperate thread for the shifting movement
             threadMove = threading.Thread(target=iterateEachBody)
             threadMove.start()
+            #print("" + str(SnakeX) + " " + str(SnakeY))
+            currentBoxNum = 0
 
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
@@ -228,6 +229,8 @@ while isRunning:
             threadMove = threading.Thread(target=iterateEachBody)
             threadMove.start()
 
+            #print("" + str(SnakeX) + " " + str(SnakeY))
+            currentBoxNum = 0
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
         #The snake should move up
@@ -238,6 +241,9 @@ while isRunning:
             threadMove = threading.Thread(target=iterateEachBody)
             threadMove.start()
 
+            #print("" + str(SnakeX) + " " + str(SnakeY))
+            currentBoxNum = 0
+
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
         #The snake should move down
@@ -247,3 +253,6 @@ while isRunning:
             # Make a seperate thread for the shifting movement
             threadMove = threading.Thread(target=iterateEachBody)
             threadMove.start()
+
+            #print("" + str(SnakeX) + " " + str(SnakeY))
+            currentBoxNum = 0
