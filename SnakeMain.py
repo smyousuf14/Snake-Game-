@@ -207,7 +207,7 @@ while isRunning:
     paint()
 
     #print("" + str(mainSnake.getSnakeBox(0).getYValue) + "  " + str(SnakeY)) #For testing/debugging purposes
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT and not event.key == pygame.K_UP and not event.key == pygame.K_DOWN:
         #The snake should move right
         if SnakeX != 10:
             SnakeX = 10
@@ -220,7 +220,7 @@ while isRunning:
             currentBoxNum = 0
 
 
-    elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+    elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT and not event.key == pygame.K_UP and not event.key == pygame.K_DOWN and not event.key == pygame.K_RIGHT:
         #The snake should move left
         if SnakeX != -10:
             SnakeX = -10
@@ -232,7 +232,7 @@ while isRunning:
             #print("" + str(SnakeX) + " " + str(SnakeY))
             currentBoxNum = 0
 
-    elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+    elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP and not event.key == pygame.K_DOWN and not event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT :
         #The snake should move up
         if SnakeY != -10:
             SnakeY = -10
@@ -245,7 +245,7 @@ while isRunning:
             currentBoxNum = 0
 
 
-    elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
+    elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN and not event.key == pygame.K_UP and not event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT:
         #The snake should move down
         if SnakeY != 10:
             SnakeY = 10
