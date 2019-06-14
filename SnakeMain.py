@@ -190,7 +190,7 @@ SnakeY = 0
 
 
 # The following function will iterate through each snake body.
-def iterateEachBody():
+def iterateEachBody(direction):
     #Make sure that the current box number is 0.
     print("Start")
 
@@ -202,6 +202,9 @@ def iterateEachBody():
         mainSnake.getSnakeBox(counter).snakeSpeedX = SnakeX
         mainSnake.getSnakeBox(counter).snakeSpeedY = SnakeY
         time.sleep(0.10)
+
+        mainSnake.getSnakeBox(counter).direction = direction #adjust the direction
+        mainSnake.adjust(counter) #adjust the snake
 
 # The following function will deal with the snakes movements.
 def runSnake(boxNum):
@@ -247,8 +250,9 @@ while isRunning:
             SnakeX = 10
             SnakeY = 0
 
+
             # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove = threading.Thread(target=iterateEachBody, args =("right",))
             threadMove.start()
             #print("" + str(SnakeX) + " " + str(SnakeY))
             currentBoxNum = 0
@@ -260,7 +264,7 @@ while isRunning:
             SnakeX = -10
             SnakeY = 0
             # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove = threading.Thread(target=iterateEachBody, args = ("left",))
             threadMove.start()
 
             #print("" + str(SnakeX) + " " + str(SnakeY))
@@ -272,7 +276,7 @@ while isRunning:
             SnakeY = -10
             SnakeX  = 0
             # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove = threading.Thread(target=iterateEachBody, args = ("up",))
             threadMove.start()
 
             #print("" + str(SnakeX) + " " + str(SnakeY))
@@ -285,7 +289,7 @@ while isRunning:
             SnakeY = 10
             SnakeX  = 0
             # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody)
+            threadMove = threading.Thread(target=iterateEachBody, args = ("down",))
             threadMove.start()
 
             #print("" + str(SnakeX) + " " + str(SnakeY))
