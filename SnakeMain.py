@@ -74,7 +74,18 @@ class Snake:
 
     #Add a body box to the snake's overall body.
     def addSnakeBox(self, direction):
-        self.A_Snake.append(SnakeBody(350 - (self.count * 20),350, direction))
+        # Check the direction and add accordingly
+        if direction == "right":
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue - (self.count * 20),self.A_Snake[self.count - 1].getYValue , direction))
+            print("right")
+        elif direction == "left":
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + (self.count * 20), self.A_Snake[self.count - 1].getYValue, direction))
+            print("left")
+        elif direction == "up":
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue, self.A_Snake[self.count - 1].getYValue - (self.count * 20), direction))
+        elif direction == "down":
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
+                                          self.A_Snake[self.count - 1].getYValue + (self.count * 20), direction))
         self.count += 1
 
     # Return the a specified snake body if it exists
@@ -262,7 +273,6 @@ while isRunning:
             SnakeX = 10
             SnakeY = 0
 
-
             # Make a seperate thread for the shifting movement
             threadMove = threading.Thread(target=iterateEachBody, args =("right",))
             threadMove.start()
@@ -287,9 +297,16 @@ while isRunning:
         if SnakeY != -10:
             SnakeY = -10
             SnakeX  = 0
+
+            mainSnake.addSnakeBox("up")
+            threadSnake = threading.Thread(target=runSnake, args=(1,))
+            threadSnake.start()
+
             # Make a seperate thread for the shifting movement
             threadMove = threading.Thread(target=iterateEachBody, args = ("up",))
             threadMove.start()
+
+
 
             #print("" + str(SnakeX) + " " + str(SnakeY))
             currentBoxNum = 0
