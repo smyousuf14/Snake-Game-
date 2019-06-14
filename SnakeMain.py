@@ -160,6 +160,7 @@ int = 0
 pressedDown = False
 currentBoxNum = 0 # This is the current snake body number
 isMoved = False
+isAdded = False # If a box has been added
 
 def paint():
     gameDisplay.fill((0,0,0))
@@ -172,9 +173,20 @@ def paint():
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, mainSnake.getSnakeBox(counter).getHeight, mainSnake.getSnakeBox(counter).getLength))
         #time.sleep(0.5)
 
-    # Make sure that
-
     #Check for collisions with the food.
+    for counter in range(0, mainSnake.getCountNumber()):
+        if RectangleRectangleCollision(foodX, foodY, 20, 20, mainSnake.getSnakeBox(counter).getXValue, mainSnake.getSnakeBox(counter).getYValue, 20, 20):
+            #Add a new box to the snake body.
+            global isAdded # Indicate to the compiler that it is a global variable
+            if isAdded == False:
+
+                newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).direction
+
+                mainSnake.addSnakeBox(newDirection)
+                threadSnake = threading.Thread(target=runSnake, args= (mainSnake.getCountNumber(),))
+                threadSnake.start()
+                isAdded = True
+
 
     pygame.display.flip()  #Update the screen
     time.sleep(0.0005)
@@ -226,10 +238,10 @@ mainSnake.addSnakeBox("right")
 threadSnake = threading.Thread(target = runSnake, args = (1,))
 threadSnake.start()
 
-
 #Next, create a random block.
 foodX = np.random.randint(low = 1, high = 500)
 foodY = np.random.randint(low = 1, high = 500)
+
 
 #print(foodX)
 #print(foodY)
