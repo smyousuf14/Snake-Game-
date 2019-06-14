@@ -194,7 +194,7 @@ def paint():
                 newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).direction
 
                 mainSnake.addSnakeBox(newDirection)
-                threadSnake = threading.Thread(target=runSnake, args= (mainSnake.getCountNumber(),))
+                threadSnake = threading.Thread(target=runSnake, args= (mainSnake.getCountNumber() - 1,))
                 threadSnake.start()
                 isAdded = True
 
@@ -245,9 +245,9 @@ def runSnake(boxNum):
 threadSnake = threading.Thread(target = runSnake, args = (0,))
 threadSnake.start()
 
-mainSnake.addSnakeBox("right")
-threadSnake = threading.Thread(target = runSnake, args = (1,))
-threadSnake.start()
+#mainSnake.addSnakeBox("right")
+#threadSnake = threading.Thread(target = runSnake, args = (1,))
+#threadSnake.start()
 
 #Next, create a random block.
 foodX = np.random.randint(low = 1, high = 500)
@@ -297,10 +297,6 @@ while isRunning:
         if SnakeY != -10:
             SnakeY = -10
             SnakeX  = 0
-
-            mainSnake.addSnakeBox("up")
-            threadSnake = threading.Thread(target=runSnake, args=(1,))
-            threadSnake.start()
 
             # Make a seperate thread for the shifting movement
             threadMove = threading.Thread(target=iterateEachBody, args = ("up",))
