@@ -76,16 +76,17 @@ class Snake:
     def addSnakeBox(self, direction):
         # Check the direction and add accordingly
         if direction == "right":
-            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue - (self.count * 20),self.A_Snake[self.count - 1].getYValue , direction))
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue - 20,self.A_Snake[self.count - 1].getYValue , direction))
             print("right")
         elif direction == "left":
-            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + (self.count * 20), self.A_Snake[self.count - 1].getYValue, direction))
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + 20, self.A_Snake[self.count - 1].getYValue, direction))
             print("left")
+
         elif direction == "up":
-            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue, self.A_Snake[self.count - 1].getYValue - (self.count * 20), direction))
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue, self.A_Snake[self.count - 1].getYValue - 20, direction))
         elif direction == "down":
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
-                                          self.A_Snake[self.count - 1].getYValue + (self.count * 20), direction))
+                                          self.A_Snake[self.count - 1].getYValue + 20, direction))
         self.count += 1
 
     # Return the a specified snake body if it exists
@@ -172,11 +173,14 @@ pressedDown = False
 currentBoxNum = 0 # This is the current snake body number
 isMoved = False
 isAdded = False # If a box has been added
-
+foodX = 0
+foodY = 0
 def paint():
     gameDisplay.fill((0,0,0))
 
     # Paint the food.
+    global foodX
+    global foodY
     pygame.draw.rect(gameDisplay, (0, 128, 255), (foodX, foodY, 20, 20))
 
     # Paint the snake on the canvas
@@ -196,7 +200,9 @@ def paint():
                 mainSnake.addSnakeBox(newDirection)
                 threadSnake = threading.Thread(target=runSnake, args= (mainSnake.getCountNumber() - 1,))
                 threadSnake.start()
-                isAdded = True
+                #isAdded = True
+                foodX = np.random.randint(low=1, high=500)
+                foodY = np.random.randint(low=1, high=500)
 
 
     pygame.display.flip()  #Update the screen
