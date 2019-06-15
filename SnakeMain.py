@@ -230,6 +230,7 @@ def iterateEachBody(direction):
 
         mainSnake.getSnakeBox(counter).snakeSpeedX = SnakeX
         mainSnake.getSnakeBox(counter).snakeSpeedY = SnakeY
+
         time.sleep(0.10)
 
         mainSnake.getSnakeBox(counter).direction = direction #adjust the direction
