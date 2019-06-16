@@ -122,6 +122,9 @@ class Snake:
         if direction == DIRECTION_RIGHT:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue - 20,
                                           self.A_Snake[self.count - 1].getYValue , direction))
+
+            #Adjust the speed such that it has the same speed as the block right before it.
+            
             print("right")
         elif direction == DIRECTION_LEFT:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + 20,
@@ -143,6 +146,7 @@ class Snake:
     # Returns the count number.
     def getCountNumber(self):
         return self.count
+
 # Determine if there is a collision between two rectangle objects.
 def RectangleRectangleCollision(x1,y1,l1,h1, x2,y2,l2,h2):
     isCollision = False
@@ -199,7 +203,20 @@ def paint():
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, mainSnake.getSnakeBox(counter).getHeight, mainSnake.getSnakeBox(counter).getLength))
 
     pygame.display.flip()  #Update the screen
-    time.sleep(0.0005)
+    time.sleep(0.005)
+
+    # Check for collisions with the food.
+    for counter in range(0, mainSnake.getCountNumber()):
+        if RectangleRectangleCollision(foodX, foodY, 20, 20, mainSnake.getSnakeBox(counter).getXValue,
+                                       mainSnake.getSnakeBox(counter).getYValue, 20, 20):
+
+            # Add a new box to the snake body.
+            newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).getDirection
+            mainSnake.addSnakeBox(newDirection)
+
+            foodX = np.random.randint(low=1, high=500)
+            foodY = np.random.randint(low=1, high=500)
+
 
 #The game starts
 
@@ -220,7 +237,7 @@ def runSnake():
                 mainSnake.getSnakeBox(indexNumber).getYValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedY)
 
         # wait a while
-        time.sleep(0.05)
+        time.sleep(0.10)
 
 # Iterate this direction through each box in the snake body.
 def iterateEachBody(direction):
@@ -232,7 +249,7 @@ def iterateEachBody(direction):
         mainSnake.getSnakeBox(indexNumber).setDirection(direction)
 
         #Delay for a certain time.
-        time.sleep(0.10)
+        time.sleep(0.20)
 
 # Start running the movements of the snake in a sepearate thread
 threadSnake = threading.Thread(target = runSnake)
@@ -240,10 +257,10 @@ threadSnake.start()
 
 mainSnake.addSnakeBox(DIRECTION_RIGHT)
 mainSnake.addSnakeBox(DIRECTION_RIGHT)
-mainSnake.addSnakeBox(DIRECTION_RIGHT)
-mainSnake.addSnakeBox(DIRECTION_RIGHT)
-mainSnake.addSnakeBox(DIRECTION_RIGHT)
-mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_LEFT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
 #Next, create a random block.
 foodX = np.random.randint(low = 1, high = 500)
