@@ -128,30 +128,31 @@ class Snake:
                                           self.A_Snake[self.count - 1].getYValue , direction))
 
             #Adjust the speed such that it has the same speed as the block right before it.
-            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
-            print("right")
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+            #print(direction)
         elif direction == DIRECTION_LEFT:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + 20,
                                           self.A_Snake[self.count - 1].getYValue, direction))
 
             #Adjust the speed such that it has the same speed as the block right before it.
-            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
-            print("left")
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+            #print(direction)
 
         elif direction == DIRECTION_UP:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
-                                          self.A_Snake[self.count - 1].getYValue - 20, direction))
-
+                                          self.A_Snake[self.count - 1].getYValue + 20, direction))
+            #print(direction)
             # Adjust the speed such that it has the same speed as the block right before it.
-            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
         elif direction == DIRECTION_DOWN:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
-                                          self.A_Snake[self.count - 1].getYValue + 20, direction))
-
+                                          self.A_Snake[self.count - 1].getYValue - 20, direction))
+            #print(direction)
             # Adjust the speed such that it has the same speed as the block right before it.
-            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
 
         self.count += 1
+        #print(self.count)
 
     # Return the a specified snake body if it exists
     def getSnakeBox(self, indexNumber):
@@ -199,8 +200,6 @@ clock = pygame.time.Clock()
 isRunning = True
 pressedDown = False
 currentBoxNum = 0 # This is the current snake body number
-isMoved = False
-isAdded = False # If a box has been added
 foodX = 0
 foodY = 0
 
@@ -212,12 +211,14 @@ def paint():
     global foodY
     pygame.draw.rect(gameDisplay, (0, 128, 255), (foodX, foodY, 20, 20))
 
+    #move
+    runSnake()
+
     # Paint the snake on the canvas
     for counter in range(0, mainSnake.getCountNumber()):
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, mainSnake.getSnakeBox(counter).getHeight, mainSnake.getSnakeBox(counter).getLength))
 
-    pygame.display.flip()  #Update the screen
-    time.sleep(0.005)
+
 
     # Check for collisions with the food.
     for counter in range(0, mainSnake.getCountNumber()):
@@ -226,13 +227,15 @@ def paint():
 
             # Add a new box to the snake body.
             newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).getDirection
-            print(newDirection) #For Debugging
+           # print(newDirection) #For Debugging
             mainSnake.addSnakeBox(newDirection)
 
             foodX = np.random.randint(low=1, high=500)
             foodY = np.random.randint(low=1, high=500)
 
+    pygame.display.flip()  # Update the screen
 
+    time.sleep(0.10)
 #The game starts
 
 #Begin by creating a snake.
@@ -241,38 +244,48 @@ mainSnake = Snake(DIRECTION_RIGHT)
 # The following function will deal with the snakes movements.
 def runSnake():
 
-    while True:
+    for indexNumber in range(0, mainSnake.getCountNumber()):
 
-        for indexNumber in range(0, mainSnake.getCountNumber()):
+        mainSnake.getSnakeBox(indexNumber).setXValue(
+            mainSnake.getSnakeBox(indexNumber).getXValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedX)
 
-            mainSnake.getSnakeBox(indexNumber).setXValue(
-                mainSnake.getSnakeBox(indexNumber).getXValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedX)
+        mainSnake.getSnakeBox(indexNumber).setYValue(
+            mainSnake.getSnakeBox(indexNumber).getYValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedY)
 
-            mainSnake.getSnakeBox(indexNumber).setYValue(
-                mainSnake.getSnakeBox(indexNumber).getYValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedY)
-
-        # wait a while
-        time.sleep(0.10)
+    # wait a while
+    #time.sleep(0.10)
 
 # Iterate this direction through each box in the snake body.
 def iterateEachBody(direction):
 
-    #print("start") #For debugging purposes
+    snakeLimit = mainSnake.getCountNumber()
 
-    for indexNumber in range(0, mainSnake.getCountNumber()):
+    for indexNumber in range(0, snakeLimit):
 
         mainSnake.getSnakeBox(indexNumber).setDirection(direction)
+
+        if snakeLimit != mainSnake.getCountNumber():
+            isAdded = True
+
+        else:
+            isAdded = False
 
         #Delay for a certain time.
         time.sleep(0.20)
 
-# Start running the movements of the snake in a sepearate thread
-threadSnake = threading.Thread(target = runSnake)
-threadSnake.start()
+    if isAdded:
+        mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).setDirection(direction)
+        time.sleep(0.20)
+        isAdded = False
 
-mainSnake.addSnakeBox(DIRECTION_RIGHT)
-mainSnake.addSnakeBox(DIRECTION_RIGHT)
-#mainSnake.addSnakeBox(DIRECTION_LEFT)
+
+# Start running the movements of the snake in a sepearate thread
+#threadSnake = threading.Thread(target = runSnake)
+#threadSnake.start()
+
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
