@@ -98,15 +98,19 @@ class SnakeBody:
         if direction == DIRECTION_RIGHT:
             self._snakeSpeedX = 10
             self._snakeSpeedY = 0
+            self._direction = DIRECTION_RIGHT
         elif direction == DIRECTION_LEFT:
             self._snakeSpeedX = -10
             self._snakeSpeedY = 0
+            self._direction = DIRECTION_LEFT
         elif direction == DIRECTION_UP:
             self._snakeSpeedX = 0
             self._snakeSpeedY = -10
+            self._direction = DIRECTION_UP
         elif direction == DIRECTION_DOWN:
             self._snakeSpeedX = 0
             self._snakeSpeedY = 10
+            self._direction = DIRECTION_DOWN
 
     def toString(self):
         print("XValue: " + str(self._XValue) + " YValue: " + str(self._YValue))
@@ -124,19 +128,29 @@ class Snake:
                                           self.A_Snake[self.count - 1].getYValue , direction))
 
             #Adjust the speed such that it has the same speed as the block right before it.
-            
+            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
             print("right")
         elif direction == DIRECTION_LEFT:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + 20,
                                           self.A_Snake[self.count - 1].getYValue, direction))
+
+            #Adjust the speed such that it has the same speed as the block right before it.
+            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
             print("left")
 
         elif direction == DIRECTION_UP:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
                                           self.A_Snake[self.count - 1].getYValue - 20, direction))
+
+            # Adjust the speed such that it has the same speed as the block right before it.
+            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
         elif direction == DIRECTION_DOWN:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
                                           self.A_Snake[self.count - 1].getYValue + 20, direction))
+
+            # Adjust the speed such that it has the same speed as the block right before it.
+            self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+
         self.count += 1
 
     # Return the a specified snake body if it exists
@@ -212,6 +226,7 @@ def paint():
 
             # Add a new box to the snake body.
             newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).getDirection
+            print(newDirection) #For Debugging
             mainSnake.addSnakeBox(newDirection)
 
             foodX = np.random.randint(low=1, high=500)
@@ -242,7 +257,7 @@ def runSnake():
 # Iterate this direction through each box in the snake body.
 def iterateEachBody(direction):
 
-    print("start") #For debugging purposes
+    #print("start") #For debugging purposes
 
     for indexNumber in range(0, mainSnake.getCountNumber()):
 
