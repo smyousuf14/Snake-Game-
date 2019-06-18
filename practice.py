@@ -233,6 +233,14 @@ def paint():
             foodX = np.random.randint(low=1, high=500)
             foodY = np.random.randint(low=1, high=500)
 
+    # Check for collisions of the head with any part of the snake.
+    for indexNumber in range(1, mainSnake.getCountNumber()):
+        if RectangleRectangleCollision(mainSnake.getSnakeBox(0).getXValue, mainSnake.getSnakeBox(0).getYValue, 20, 20,
+                                       mainSnake.getSnakeBox(indexNumber).getXValue, mainSnake.getSnakeBox(indexNumber).getYValue, 20, 20):
+            # End the game.
+            global isRunning
+            #isRunning = False
+
     pygame.display.flip()  # Update the screen
 
     time.sleep(0.10)
