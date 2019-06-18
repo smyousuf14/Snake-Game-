@@ -9,6 +9,12 @@ import numpy as np
 #Initialize pygame
 pygame.init()
 
+# Declare global constants
+DIRECTION_RIGHT = "right"
+DIRECTION_LEFT = "left"
+DIRECTION_UP = "up"
+DIRECTION_DOWN = "down"
+
 #This class creates a box body of a snake.
 class SnakeBody:
 
@@ -22,9 +28,22 @@ class SnakeBody:
         self._Height = 20
         self.MAX_X = 500
         self.MAX_Y = 500
-        self.snakeSpeedX = 10
-        self.snakeSpeedY = 0
-        self.direction = direction
+        self._direction = direction
+
+        # Set the speed according to the direction
+        if direction == DIRECTION_RIGHT:
+            self._snakeSpeedX = 10
+            self._snakeSpeedY = 0
+        elif direction == DIRECTION_LEFT:
+            self._snakeSpeedX = -10
+            self._snakeSpeedY = 0
+        elif direction == DIRECTION_UP:
+            self._snakeSpeedX = 0
+            self._snakeSpeedY = -10
+        elif direction == DIRECTION_DOWN:
+            self._snakeSpeedX = 0
+            self._snakeSpeedY = 10
+
 
     # Getters
     @property
@@ -42,6 +61,18 @@ class SnakeBody:
     @property
     def getHeight(self):
         return self._Height
+
+    @property
+    def getSnakeSpeedX(self):
+        return self._snakeSpeedX
+
+    @property
+    def getSnakeSpeedY(self):
+        return self._snakeSpeedY
+
+    @property
+    def getDirection(self):
+        return self._direction
 
     # Setter
     def setXValue(self, XValue):
@@ -63,9 +94,26 @@ class SnakeBody:
         else:
             self._YValue = YValue
 
+    def setDirection(self, direction):
+        if direction == DIRECTION_RIGHT:
+            self._snakeSpeedX = 10
+            self._snakeSpeedY = 0
+            self._direction = DIRECTION_RIGHT
+        elif direction == DIRECTION_LEFT:
+            self._snakeSpeedX = -10
+            self._snakeSpeedY = 0
+            self._direction = DIRECTION_LEFT
+        elif direction == DIRECTION_UP:
+            self._snakeSpeedX = 0
+            self._snakeSpeedY = -10
+            self._direction = DIRECTION_UP
+        elif direction == DIRECTION_DOWN:
+            self._snakeSpeedX = 0
+            self._snakeSpeedY = 10
+            self._direction = DIRECTION_DOWN
+
     def toString(self):
         print("XValue: " + str(self._XValue) + " YValue: " + str(self._YValue))
-
 class Snake:
 
     count = 1
@@ -75,19 +123,36 @@ class Snake:
     #Add a body box to the snake's overall body.
     def addSnakeBox(self, direction):
         # Check the direction and add accordingly
-        if direction == "right":
-            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue - 20,self.A_Snake[self.count - 1].getYValue , direction))
-            print("right")
-        elif direction == "left":
-            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + 20, self.A_Snake[self.count - 1].getYValue, direction))
-            print("left")
+        if direction == DIRECTION_RIGHT:
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue - 20,
+                                          self.A_Snake[self.count - 1].getYValue , direction))
 
-        elif direction == "up":
-            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue, self.A_Snake[self.count - 1].getYValue - 20, direction))
-        elif direction == "down":
+            #Adjust the speed such that it has the same speed as the block right before it.
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+            #print(direction)
+        elif direction == DIRECTION_LEFT:
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue + 20,
+                                          self.A_Snake[self.count - 1].getYValue, direction))
+
+            #Adjust the speed such that it has the same speed as the block right before it.
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+            #print(direction)
+
+        elif direction == DIRECTION_UP:
             self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
                                           self.A_Snake[self.count - 1].getYValue + 20, direction))
+            #print(direction)
+            # Adjust the speed such that it has the same speed as the block right before it.
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+        elif direction == DIRECTION_DOWN:
+            self.A_Snake.append(SnakeBody(self.A_Snake[self.count - 1].getXValue,
+                                          self.A_Snake[self.count - 1].getYValue - 20, direction))
+            #print(direction)
+            # Adjust the speed such that it has the same speed as the block right before it.
+            #self.A_Snake[self.count - 1].setDirection(self.A_Snake[self.count - 2].getDirection)
+
         self.count += 1
+        #print(self.count)
 
     # Return the a specified snake body if it exists
     def getSnakeBox(self, indexNumber):
@@ -96,39 +161,6 @@ class Snake:
     # Returns the count number.
     def getCountNumber(self):
         return self.count
-
-    # Adjust the snake to keep it from leaving its form.
-    def adjust(self, indexNumber):
-        # Check the direction.
-        if self.A_Snake[indexNumber].direction == "right":
-            # It is to the right.
-            # Make sure the the next snake body box is not empty.
-            try:
-                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue - 20)
-                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue)
-            except:
-                print("")
-        elif self.A_Snake[indexNumber].direction == "left":
-            # It is to the left
-            try:
-                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue + 20)
-                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue)
-            except:
-                print("")
-        elif self.A_Snake[indexNumber].direction == "up":
-            # It is up.
-            try:
-                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue)
-                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue + 20)
-            except:
-                print("")
-        elif self.A_Snake[indexNumber].direction == "down":
-            # It is down
-            try:
-                self.A_Snake[indexNumber + 1].setXValue(self.A_Snake[indexNumber].getXValue)
-                self.A_Snake[indexNumber + 1].setYValue(self.A_Snake[indexNumber].getYValue - 20)
-            except:
-                print("")
 
 # Determine if there is a collision between two rectangle objects.
 def RectangleRectangleCollision(x1,y1,l1,h1, x2,y2,l2,h2):
@@ -166,15 +198,11 @@ clock = pygame.time.Clock()
 
 #Global Variables
 isRunning = True
-RecX  = 30
-RecY = 30
-int = 0
 pressedDown = False
 currentBoxNum = 0 # This is the current snake body number
-isMoved = False
-isAdded = False # If a box has been added
 foodX = 0
 foodY = 0
+
 def paint():
     gameDisplay.fill((0,0,0))
 
@@ -183,86 +211,88 @@ def paint():
     global foodY
     pygame.draw.rect(gameDisplay, (0, 128, 255), (foodX, foodY, 20, 20))
 
+    #move
+    runSnake()
+
     # Paint the snake on the canvas
     for counter in range(0, mainSnake.getCountNumber()):
         pygame.draw.rect(gameDisplay, (0, 128, 255), pygame.Rect(mainSnake.getSnakeBox(counter).getXValue,mainSnake.getSnakeBox(counter).getYValue, mainSnake.getSnakeBox(counter).getHeight, mainSnake.getSnakeBox(counter).getLength))
-        #time.sleep(0.5)
 
-    #Check for collisions with the food.
+
+
+    # Check for collisions with the food.
     for counter in range(0, mainSnake.getCountNumber()):
-        if RectangleRectangleCollision(foodX, foodY, 20, 20, mainSnake.getSnakeBox(counter).getXValue, mainSnake.getSnakeBox(counter).getYValue, 20, 20):
-            #Add a new box to the snake body.
-            global isAdded # Indicate to the compiler that it is a global variable
-            if isAdded == False:
+        if RectangleRectangleCollision(foodX, foodY, 20, 20, mainSnake.getSnakeBox(counter).getXValue,
+                                       mainSnake.getSnakeBox(counter).getYValue, 20, 20):
 
-                newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).direction
+            # Add a new box to the snake body.
+            newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).getDirection
+            print(mainSnake.getCountNumber()) #For Debugging
+            mainSnake.addSnakeBox(newDirection)
 
-                mainSnake.addSnakeBox(newDirection)
-                threadSnake = threading.Thread(target=runSnake, args= (mainSnake.getCountNumber() - 1,))
-                threadSnake.start()
-                #isAdded = True
-                foodX = np.random.randint(low=1, high=500)
-                foodY = np.random.randint(low=1, high=500)
+            foodX = np.random.randint(low=1, high=500)
+            foodY = np.random.randint(low=1, high=500)
 
+    pygame.display.flip()  # Update the screen
 
-    pygame.display.flip()  #Update the screen
-    time.sleep(0.0005)
-
+    time.sleep(0.10)
 #The game starts
 
 #Begin by creating a snake.
-mainSnake = Snake("right")
-
-# Give default values for the snake speed.
-SnakeX = 10
-SnakeY = 0
-
-
-# The following function will iterate through each snake body.
-def iterateEachBody(direction):
-    #Make sure that the current box number is 0.
-    print("Start")
-
-    for counter in range(0, mainSnake.getCountNumber()):
-        print(counter)
-        print(mainSnake.getSnakeBox(counter).getXValue)
-        print(mainSnake.getSnakeBox(counter).getYValue)
-
-        mainSnake.getSnakeBox(counter).snakeSpeedX = SnakeX
-        mainSnake.getSnakeBox(counter).snakeSpeedY = SnakeY
-
-        time.sleep(0.10)
-
-        mainSnake.getSnakeBox(counter).direction = direction #adjust the direction
-        mainSnake.adjust(counter) #adjust the snake
+mainSnake = Snake(DIRECTION_RIGHT)
 
 # The following function will deal with the snakes movements.
-def runSnake(boxNum):
+def runSnake():
 
-    # Local Variable List
+    for indexNumber in range(0, mainSnake.getCountNumber()):
 
-    while(True):
+        mainSnake.getSnakeBox(indexNumber).setXValue(
+            mainSnake.getSnakeBox(indexNumber).getXValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedX)
 
-        # Abjust X and Y values for the snake according to the current speed
-        mainSnake.getSnakeBox(boxNum).setXValue(mainSnake.getSnakeBox(boxNum).getXValue + mainSnake.getSnakeBox(boxNum).snakeSpeedX )
-        mainSnake.getSnakeBox(boxNum).setYValue(mainSnake.getSnakeBox(boxNum).getYValue + mainSnake.getSnakeBox(boxNum).snakeSpeedY )
-        time.sleep(0.05)
+        mainSnake.getSnakeBox(indexNumber).setYValue(
+            mainSnake.getSnakeBox(indexNumber).getYValue + mainSnake.getSnakeBox(indexNumber).getSnakeSpeedY)
 
-#Make the snake run on a seperate thread.
-threadSnake = threading.Thread(target = runSnake, args = (0,))
-threadSnake.start()
+    # wait a while
+    #time.sleep(0.10)
 
-#mainSnake.addSnakeBox("right")
-#threadSnake = threading.Thread(target = runSnake, args = (1,))
+# Iterate this direction through each box in the snake body.
+def iterateEachBody(direction):
+
+    snakeLimit = mainSnake.getCountNumber()
+
+    for indexNumber in range(0, snakeLimit):
+
+        mainSnake.getSnakeBox(indexNumber).setDirection(direction)
+
+        if snakeLimit != mainSnake.getCountNumber():
+            isAdded = True
+
+        else:
+            isAdded = False
+
+        #Delay for a certain time.
+        time.sleep(0.20)
+
+    if isAdded:
+        mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).setDirection(direction)
+        time.sleep(0.20)
+        isAdded = False
+
+
+# Start running the movements of the snake in a sepearate thread
+#threadSnake = threading.Thread(target = runSnake)
 #threadSnake.start()
+
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
 #Next, create a random block.
 foodX = np.random.randint(low = 1, high = 500)
 foodY = np.random.randint(low = 1, high = 500)
-
-
-#print(foodX)
-#print(foodY)
 
 while isRunning:
 
@@ -273,56 +303,26 @@ while isRunning:
     #Repaint
     paint()
 
-    #print("" + str(mainSnake.getSnakeBox(0).getYValue) + "  " + str(SnakeY)) #For testing/debugging purposes
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT and not event.key == pygame.K_UP and not event.key == pygame.K_DOWN:
         #The snake should move right
-        if SnakeX != 10:
-            SnakeX = 10
-            SnakeY = 0
-
-            # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody, args =("right",))
-            threadMove.start()
-            #print("" + str(SnakeX) + " " + str(SnakeY))
-            currentBoxNum = 0
-
+        if mainSnake.getSnakeBox(0).getXValue != 10:
+            runningThread = threading.Thread(target = iterateEachBody, args = (DIRECTION_RIGHT,))
+            runningThread.start()
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT and not event.key == pygame.K_UP and not event.key == pygame.K_DOWN and not event.key == pygame.K_RIGHT:
         #The snake should move left
-        if SnakeX != -10:
-            SnakeX = -10
-            SnakeY = 0
-            # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody, args = ("left",))
-            threadMove.start()
-
-            #print("" + str(SnakeX) + " " + str(SnakeY))
-            currentBoxNum = 0
+        if mainSnake.getSnakeBox(0).getXValue != -10:
+            runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_LEFT,))
+            runningThread.start()
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP and not event.key == pygame.K_DOWN and not event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT :
         #The snake should move up
-        if SnakeY != -10:
-            SnakeY = -10
-            SnakeX  = 0
-
-            # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody, args = ("up",))
-            threadMove.start()
-
-
-
-            #print("" + str(SnakeX) + " " + str(SnakeY))
-            currentBoxNum = 0
-
+        if mainSnake.getSnakeBox(0).getYValue != -10:
+            runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_UP,))
+            runningThread.start()
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN and not event.key == pygame.K_UP and not event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT:
         #The snake should move down
-        if SnakeY != 10:
-            SnakeY = 10
-            SnakeX  = 0
-            # Make a seperate thread for the shifting movement
-            threadMove = threading.Thread(target=iterateEachBody, args = ("down",))
-            threadMove.start()
-
-            #print("" + str(SnakeX) + " " + str(SnakeY))
-            currentBoxNum = 0
+        if mainSnake.getSnakeBox(0).getYValue != 10:
+            runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_DOWN,))
+            runningThread.start()
