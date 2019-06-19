@@ -203,6 +203,7 @@ currentBoxNum = 0 # This is the current snake body number
 foodX = 0
 foodY = 0
 
+
 def paint():
     gameDisplay.fill((0,0,0))
 
@@ -224,22 +225,14 @@ def paint():
     for counter in range(0, mainSnake.getCountNumber()):
         if RectangleRectangleCollision(foodX, foodY, 20, 20, mainSnake.getSnakeBox(counter).getXValue,
                                        mainSnake.getSnakeBox(counter).getYValue, 20, 20):
+            # Get new food values
+            foodX = np.random.randint(low=15, high=480)
+            foodY = np.random.randint(low=15, high=480)
 
             # Add a new box to the snake body.
             newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).getDirection
             print(mainSnake.getCountNumber()) #For Debugging
             mainSnake.addSnakeBox(newDirection)
-
-            foodX = np.random.randint(low=1, high=500)
-            foodY = np.random.randint(low=1, high=500)
-
-    # Check for collisions of the head with any part of the snake.
-    for indexNumber in range(1, mainSnake.getCountNumber()):
-        if RectangleRectangleCollision(mainSnake.getSnakeBox(0).getXValue, mainSnake.getSnakeBox(0).getYValue, 20, 20,
-                                       mainSnake.getSnakeBox(indexNumber).getXValue, mainSnake.getSnakeBox(indexNumber).getYValue, 20, 20):
-            # End the game.
-            global isRunning
-            #isRunning = False
 
     pygame.display.flip()  # Update the screen
 
@@ -320,8 +313,8 @@ def iterateEachBody(direction):
 
 
 #Next, create a random block.
-foodX = np.random.randint(low = 1, high = 500)
-foodY = np.random.randint(low = 1, high = 500)
+foodX = np.random.randint(low = 15, high = 480)
+foodY = np.random.randint(low = 15, high = 480)
 
 while isRunning:
 

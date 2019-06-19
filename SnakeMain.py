@@ -203,6 +203,7 @@ currentBoxNum = 0 # This is the current snake body number
 foodX = 0
 foodY = 0
 
+
 def paint():
     gameDisplay.fill((0,0,0))
 
@@ -224,14 +225,14 @@ def paint():
     for counter in range(0, mainSnake.getCountNumber()):
         if RectangleRectangleCollision(foodX, foodY, 20, 20, mainSnake.getSnakeBox(counter).getXValue,
                                        mainSnake.getSnakeBox(counter).getYValue, 20, 20):
+            # Get new food values
+            foodX = np.random.randint(low=15, high=480)
+            foodY = np.random.randint(low=15, high=480)
 
             # Add a new box to the snake body.
             newDirection = mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).getDirection
             print(mainSnake.getCountNumber()) #For Debugging
             mainSnake.addSnakeBox(newDirection)
-
-            foodX = np.random.randint(low=1, high=500)
-            foodY = np.random.randint(low=1, high=500)
 
     pygame.display.flip()  # Update the screen
 
@@ -260,6 +261,9 @@ def iterateEachBody(direction):
 
     snakeLimit = mainSnake.getCountNumber()
 
+    #Create isAdded
+    isAdded = False
+
     for indexNumber in range(0, snakeLimit):
 
         mainSnake.getSnakeBox(indexNumber).setDirection(direction)
@@ -267,15 +271,15 @@ def iterateEachBody(direction):
         if snakeLimit != mainSnake.getCountNumber():
             isAdded = True
 
-        else:
-            isAdded = False
-
         #Delay for a certain time.
         time.sleep(0.20)
 
+    if snakeLimit != mainSnake.getCountNumber():
+        isAdded = True
+
+
     if isAdded:
         mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).setDirection(direction)
-        time.sleep(0.20)
         isAdded = False
 
 
@@ -288,11 +292,29 @@ def iterateEachBody(direction):
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
+
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+#mainSnake.addSnakeBox(DIRECTION_RIGHT)
+
+
 #Next, create a random block.
-foodX = np.random.randint(low = 1, high = 500)
-foodY = np.random.randint(low = 1, high = 500)
+foodX = np.random.randint(low = 15, high = 480)
+foodY = np.random.randint(low = 15, high = 480)
 
 while isRunning:
 
@@ -305,24 +327,24 @@ while isRunning:
 
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT and not event.key == pygame.K_UP and not event.key == pygame.K_DOWN:
         #The snake should move right
-        if mainSnake.getSnakeBox(0).getXValue != 10:
+        if mainSnake.getSnakeBox(0).getDirection != DIRECTION_RIGHT:
             runningThread = threading.Thread(target = iterateEachBody, args = (DIRECTION_RIGHT,))
             runningThread.start()
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT and not event.key == pygame.K_UP and not event.key == pygame.K_DOWN and not event.key == pygame.K_RIGHT:
         #The snake should move left
-        if mainSnake.getSnakeBox(0).getXValue != -10:
+        if mainSnake.getSnakeBox(0).getXValue != DIRECTION_LEFT:
             runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_LEFT,))
             runningThread.start()
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP and not event.key == pygame.K_DOWN and not event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT :
         #The snake should move up
-        if mainSnake.getSnakeBox(0).getYValue != -10:
+        if mainSnake.getSnakeBox(0).getYValue != DIRECTION_UP:
             runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_UP,))
             runningThread.start()
 
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN and not event.key == pygame.K_UP and not event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT:
         #The snake should move down
-        if mainSnake.getSnakeBox(0).getYValue != 10:
+        if mainSnake.getSnakeBox(0).getYValue != DIRECTION_DOWN:
             runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_DOWN,))
             runningThread.start()
