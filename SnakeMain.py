@@ -14,6 +14,7 @@ DIRECTION_RIGHT = "right"
 DIRECTION_LEFT = "left"
 DIRECTION_UP = "up"
 DIRECTION_DOWN = "down"
+DELAY_TIME = 0.10
 
 #This class creates a box body of a snake.
 class SnakeBody:
@@ -202,6 +203,7 @@ pressedDown = False
 currentBoxNum = 0 # This is the current snake body number
 foodX = 0
 foodY = 0
+isDonePainting = False # Keep track if the painting is done or not
 
 
 def paint():
@@ -236,11 +238,29 @@ def paint():
 
     pygame.display.flip()  # Update the screen
 
-    time.sleep(0.10)
+    time.sleep(DELAY_TIME)
+
+    # It is done painting.
+    global isDonePainting; isDonePainting = True;
+
+    # Check for collisions with itself.
+    global isRunning;
+    for indexNumber in range(0, mainSnake.getCountNumber()):
+
+        try:
+            if RectangleRectangleCollision(mainSnake.getSnakeBox(0).getXValue, mainSnake.getSnakeBox(0).getYValue, 20, 20,
+                                       mainSnake.getSnakeBox(indexNumber + 3).getXValue, mainSnake.getSnakeBox(indexNumber + 3).getYValue, 20, 20):
+                isRunning = False
+        except:
+            print("")
 #The game starts
 
 #Begin by creating a snake.
 mainSnake = Snake(DIRECTION_RIGHT)
+
+mainSnake.addSnakeBox(DIRECTION_RIGHT)
+mainSnake.addSnakeBox(DIRECTION_RIGHT)
+mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
 # The following function will deal with the snakes movements.
 def runSnake():
@@ -259,37 +279,42 @@ def runSnake():
 # Iterate this direction through each box in the snake body.
 def iterateEachBody(direction):
 
-    snakeLimit = mainSnake.getCountNumber()
+    global isDonePainting
+    if isDonePainting:
 
-    #Create isAdded
-    isAdded = False
+        snakeLimit = mainSnake.getCountNumber()
 
-    for indexNumber in range(0, snakeLimit):
+        #Create isAdded
+        isAdded = False
 
-        mainSnake.getSnakeBox(indexNumber).setDirection(direction)
+        for indexNumber in range(0, snakeLimit):
+
+            mainSnake.getSnakeBox(indexNumber).setDirection(direction)
+
+            if snakeLimit != mainSnake.getCountNumber():
+                isAdded = True
+
+            # It is not done painting
+            isDonePainting = False
+
+            #Delay for a certain time.
+            time.sleep(DELAY_TIME * 2)
 
         if snakeLimit != mainSnake.getCountNumber():
             isAdded = True
 
-        #Delay for a certain time.
-        time.sleep(0.20)
 
-    if snakeLimit != mainSnake.getCountNumber():
-        isAdded = True
+        if isAdded:
+            mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).setDirection(direction)
+            isAdded = False
 
 
-    if isAdded:
-        mainSnake.getSnakeBox(mainSnake.getCountNumber() - 1).setDirection(direction)
-        isAdded = False
 
 
 # Start running the movements of the snake in a sepearate thread
 #threadSnake = threading.Thread(target = runSnake)
 #threadSnake.start()
 
-#mainSnake.addSnakeBox(DIRECTION_RIGHT)
-#mainSnake.addSnakeBox(DIRECTION_RIGHT)
-#mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
