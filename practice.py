@@ -348,3 +348,6 @@ while isRunning:
         if mainSnake.getSnakeBox(0).getYValue != DIRECTION_DOWN:
             runningThread = threading.Thread(target=iterateEachBody, args = (DIRECTION_DOWN,))
             runningThread.start()
+
+
+
