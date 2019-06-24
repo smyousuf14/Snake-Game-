@@ -167,25 +167,25 @@ def RectangleRectangleCollision(x1,y1,l1,h1, x2,y2,l2,h2):
     isCollision = False
 
     #Check Top left
-    if x1 <= (x2 + l2) and x1 >= (x2):
+    if x1 < (x2 + l2) and x1 > (x2):
 
-        if y1 >= y2 and y1 <= (y2 + h2):
+        if y1 > y2 and y1 < (y2 + h2):
             isCollision = True
 
     # Check top right
-    if (x1 + l1)<= (x2 + l2) and (x1 + l1) >= (x2):
+    if (x1 + l1)< (x2 + l2) and (x1 + l1) > (x2):
 
-        if y1  >= y2 and y1 <= (y2 + h2):
+        if y1  > y2 and y1 < (y2 + h2):
             isCollision = True
 
     # Check bottom left
-    if x1 <= (x2 + l2) and x1 >= (x2):
-        if (y1 + h1) >= y2 and (y1 + h1) <= (y2 + h2):
+    if x1 < (x2 + l2) and x1 > (x2):
+        if (y1 + h1) > y2 and (y1 + h1) < (y2 + h2):
             isCollision = True
 
     # Check bottom right
-    if (x1 + l1) <= (x2 + l2) and (x1 + l1) >= (x2):
-        if (y1 + h1) >= y2 and (y1 + h1) <= (y2 + h2):
+    if (x1 + l1) < (x2 + l2) and (x1 + l1) > (x2):
+        if (y1 + h1) > y2 and (y1 + h1) < (y2 + h2):
             isCollision = True
 
     return isCollision
@@ -237,10 +237,17 @@ def paint():
     pygame.display.flip()  # Update the screen
 
     time.sleep(0.10)
+
+    # Check for collisions with itself.
+    
 #The game starts
 
 #Begin by creating a snake.
 mainSnake = Snake(DIRECTION_RIGHT)
+
+mainSnake.addSnakeBox(DIRECTION_RIGHT)
+mainSnake.addSnakeBox(DIRECTION_RIGHT)
+mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
 # The following function will deal with the snakes movements.
 def runSnake():
@@ -287,9 +294,6 @@ def iterateEachBody(direction):
 #threadSnake = threading.Thread(target = runSnake)
 #threadSnake.start()
 
-#mainSnake.addSnakeBox(DIRECTION_RIGHT)
-#mainSnake.addSnakeBox(DIRECTION_RIGHT)
-#mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 #mainSnake.addSnakeBox(DIRECTION_RIGHT)
 
